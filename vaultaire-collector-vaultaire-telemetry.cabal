@@ -1,0 +1,27 @@
+name:                vaultaire-collector-vaultaire-telemetry
+version:             0.1.0.0
+synopsis:            Vaultaire collector for Vaultaire telemetry
+description:         Vaultaire collector for Vaultaire telemetry
+homepage:            https://github.com/anchor/vaultaire-collector-vaultaire-telemetry
+license:             BSD3
+license-file:        LICENSE
+author:              Barney Desmond
+maintainer:          engineering@anchor.net.au
+copyright:           2015 Anchor Systems
+category:            Data
+build-type:          Simple
+extra-source-files:  README.md
+cabal-version:       >=1.18
+
+executable vaultaire-collector-vaultaire-telemetry
+  main-is:             Main.hs
+  build-depends:       base >=4.7 && <4.8,
+                       marquise,
+                       vaultaire-collector-common,
+                       bytestring,
+                       text,
+                       optparse-applicative >= 0.11.0,
+                       unordered-containers
+
+  hs-source-dirs:      src
+  default-language:    Haskell2010
