@@ -44,7 +44,7 @@ optionsParser = parseBroker
 main :: IO ()
 main = runCollector optionsParser initialiseExtraState cleanup collect
 
-initialiseExtraState :: CollectorOpts String -> IO (Context,Socket)
+initialiseExtraState :: CollectorOpts String -> IO (Context,Socket Sub)
 initialiseExtraState (_,broker) = do
     c <- context
     sock <- socket c Sub
@@ -52,7 +52,7 @@ initialiseExtraState (_,broker) = do
     subscribe sock ""
     return (c,sock)
 
-cleanup :: Collector String (Context,Socket) IO ()
+cleanup :: Collector String (Context,Socket a) IO ()
 cleanup = return ()
 
 
@@ -69,11 +69,11 @@ makeCollectableThing TeleResp{..} =
         return (addr, sd, _timestamp, _payload)
 
 
-collect :: Collector String (Context,Socket) IO ()
+collect :: Receiver a => Collector String (Context,Socket a) IO ()
 collect = do
     (_, (_, sock)) <- get
     forever $ do
-        datum <- receive sock
+        datum <- liftIO $ receive sock
         case (fromWire datum :: Either SomeException TeleResp) of
           Right x -> either (liftIO . putStrLn) collectData (makeCollectableThing x)
           Left  e -> liftIO $ print e
