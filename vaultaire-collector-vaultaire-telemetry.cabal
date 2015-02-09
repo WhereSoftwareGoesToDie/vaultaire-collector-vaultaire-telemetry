@@ -13,15 +13,26 @@ build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.18
 
+flag network-uri
+  description: Get Network.URI from the network-uri package
+  default: True
+
 executable vaultaire-collector-vaultaire-telemetry
   main-is:             Main.hs
   build-depends:       base >=4.7 && <4.8,
-                       marquise,
                        vaultaire-collector-common,
+                       marquise,
+                       vaultaire-common,
                        bytestring,
                        text,
+                       zeromq4-haskell,
                        optparse-applicative >= 0.11.0,
                        unordered-containers
+
+  if flag(network-uri)
+    build-depends: network-uri >= 2.6, network >= 2.6
+  else
+    build-depends: network-uri < 2.6, network < 2.6
 
   hs-source-dirs:      src
   default-language:    Haskell2010
