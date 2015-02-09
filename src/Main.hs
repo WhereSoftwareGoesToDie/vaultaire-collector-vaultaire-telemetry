@@ -1,20 +1,26 @@
-{-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE RecordWildCards   #-}
 
 module Main where
 
-import           Vaultaire.Collector.Common.Types
 import           Vaultaire.Collector.Common.Process
+import           Vaultaire.Collector.Common.Types
 
 import           Control.Exception
-import qualified Data.ByteString.Char8 as BSC (pack)
-import qualified Data.Text             as T   (pack)
-import qualified Data.HashMap.Strict   as H   (fromList)
+import           Control.Monad
+import           Control.Monad.Reader
+import           Control.Monad.State
+import           Control.Monad.Trans
+import           Data.Bifunctor
+import qualified Data.ByteString.Char8              as BSC (pack)
+import qualified Data.HashMap.Strict                as H (fromList)
+import qualified Data.Text                          as T (pack)
+import           Data.Word                          (Word64)
 import           Network.URI
 import           Options.Applicative
-import           System.ZMQ4         hiding (shutdown)
+import           System.ZMQ4                        hiding (shutdown)
 
-import           Marquise.Client (hashIdentifier)
+import           Marquise.Client                    (hashIdentifier)
 import           Vaultaire.Types
 
 helpfulParser :: ParserInfo String
