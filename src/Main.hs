@@ -14,7 +14,7 @@ import           Control.Monad.Trans
 import           Data.Bifunctor
 import qualified Data.ByteString.Char8              as BSC (pack)
 import qualified Data.HashMap.Strict                as H (fromList)
-import qualified Data.Text                          as T (pack)
+import qualified Data.Text                          as T (pack, strip)
 import           Data.Word                          (Word64)
 import           Network.URI
 import           Options.Applicative
