@@ -51,8 +51,6 @@ initialiseExtraState (_,broker) = do
 cleanup :: Collector String (Context,Socket a) IO ()
 cleanup = return ()
 
-
-
 makeCollectableThing :: TeleResp -> Either String (Address, SourceDict, TimeStamp, Word64)
 makeCollectableThing TeleResp{..} =
     let TeleMsg{..} = _msg
@@ -64,7 +62,6 @@ makeCollectableThing TeleResp{..} =
         sd <- makeSourceDict $ H.fromList $ map (bimap T.pack T.pack) sdPairs
         return (addr, sd, _timestamp, _payload)
 
-
 collect :: Receiver a => Collector String (Context,Socket a) IO ()
 collect = do
     (_, (_, sock)) <- get
@@ -73,7 +70,6 @@ collect = do
         case (fromWire datum :: Either SomeException TeleResp) of
           Right x -> either (liftIO . putStrLn) collectData (makeCollectableThing x)
           Left  e -> liftIO $ print e
-
 
 collectData :: (Address, SourceDict, TimeStamp, Word64) -> Collector o s IO ()
 collectData (addr, sd, ts, p) = do
