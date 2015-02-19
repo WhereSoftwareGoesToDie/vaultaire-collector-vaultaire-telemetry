@@ -14,11 +14,11 @@ import           Control.Monad.Trans
 import           Data.Bifunctor
 import qualified Data.ByteString.Char8              as BSC (pack)
 import qualified Data.HashMap.Strict                as H (fromList)
-import qualified Data.Text                          as T (pack)
+import qualified Data.Text                          as T (pack, strip)
 import           Data.Word                          (Word64)
 import           Network.URI
 import           Options.Applicative
-import           System.ZMQ4                        hiding (shutdown)
+import           System.ZMQ4
 
 import           Marquise.Client                    (hashIdentifier)
 import           Vaultaire.Types
@@ -37,10 +37,6 @@ optionsParser = parseBroker
         <> showDefault
         <> help "Vault broker URI"
 
-
---                  optionsParser initExtraState             cleanup              collect
--- runCollector     Parser o      (CollectorOpts o -> m s)   Collector o s m ()   Collector o s m a
-
 main :: IO ()
 main = runCollector optionsParser initialiseExtraState cleanup collect
 
@@ -55,8 +51,6 @@ initialiseExtraState (_,broker) = do
 cleanup :: Collector String (Context,Socket a) IO ()
 cleanup = return ()
 
-
-
 makeCollectableThing :: TeleResp -> Either String (Address, SourceDict, TimeStamp, Word64)
 makeCollectableThing TeleResp{..} =
     let TeleMsg{..} = _msg
@@ -65,9 +59,12 @@ makeCollectableThing TeleResp{..} =
                     , ("telemetry_msg_type", show _type) ]
         addr      = hashIdentifier $ BSC.pack $ concatMap snd sdPairs
     in do
-        sd <- makeSourceDict $ H.fromList $ map (bimap T.pack T.pack) sdPairs
+        sd <- makeSourceDict . H.fromList $ map mkTag sdPairs
         return (addr, sd, _timestamp, _payload)
-
+  where
+    -- Pack pairs into Texts, and strip off the whitespace padding from
+    -- the values.
+    mkTag = bimap T.pack (T.strip . T.pack)
 
 collect :: Receiver a => Collector String (Context,Socket a) IO ()
 collect = do
@@ -77,7 +74,6 @@ collect = do
         case (fromWire datum :: Either SomeException TeleResp) of
           Right x -> either (liftIO . putStrLn) collectData (makeCollectableThing x)
           Left  e -> liftIO $ print e
-
 
 collectData :: (Address, SourceDict, TimeStamp, Word64) -> Collector o s IO ()
 collectData (addr, sd, ts, p) = do

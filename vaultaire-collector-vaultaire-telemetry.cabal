@@ -1,5 +1,5 @@
 name:                vaultaire-collector-vaultaire-telemetry
-version:             0.1.0.0
+version:             0.1.1.0
 synopsis:            Vaultaire collector for Vaultaire telemetry
 description:         Vaultaire collector for Vaultaire telemetry
 homepage:            https://github.com/anchor/vaultaire-collector-vaultaire-telemetry
