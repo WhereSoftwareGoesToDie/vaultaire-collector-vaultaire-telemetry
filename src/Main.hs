@@ -59,7 +59,7 @@ makeCollectableThing TeleResp{..} =
                     , ("telemetry_msg_type", show _type) ]
         addr      = hashIdentifier $ BSC.pack $ concatMap snd sdPairs
     in do
-        sd <- makeSourceDict $ H.fromList $ map (bimap T.pack T.pack) sdPairs
+        sd <- makeSourceDict . H.fromList $ map (bimap T.pack (T.strip . T.pack)) sdPairs
         return (addr, sd, _timestamp, _payload)
 
 collect :: Receiver a => Collector String (Context,Socket a) IO ()
