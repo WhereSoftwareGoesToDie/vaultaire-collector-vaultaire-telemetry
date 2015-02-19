@@ -37,10 +37,6 @@ optionsParser = parseBroker
         <> showDefault
         <> help "Vault broker URI"
 
-
---                  optionsParser initExtraState             cleanup              collect
--- runCollector     Parser o      (CollectorOpts o -> m s)   Collector o s m ()   Collector o s m a
-
 main :: IO ()
 main = runCollector optionsParser initialiseExtraState cleanup collect
 
