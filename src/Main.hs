@@ -18,7 +18,7 @@ import qualified Data.Text                          as T (pack, strip)
 import           Data.Word                          (Word64)
 import           Network.URI
 import           Options.Applicative
-import           System.ZMQ4                        hiding (shutdown)
+import           System.ZMQ4
 
 import           Marquise.Client                    (hashIdentifier)
 import           Vaultaire.Types
