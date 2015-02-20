@@ -1,5 +1,5 @@
 name:                vaultaire-collector-vaultaire-telemetry
-version:             0.1.1.0
+version:             0.1.2.0
 synopsis:            Vaultaire collector for Vaultaire telemetry
 description:         Vaultaire collector for Vaultaire telemetry
 homepage:            https://github.com/anchor/vaultaire-collector-vaultaire-telemetry
@@ -24,7 +24,7 @@ executable vaultaire-collector-vaultaire-telemetry
                        bifunctors,
                        vaultaire-collector-common,
                        marquise,
-                       vaultaire-common,
+                       vaultaire-common >= 2.8.4,
                        bytestring,
                        text,
                        zeromq4-haskell,

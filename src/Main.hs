@@ -56,6 +56,7 @@ makeCollectableThing TeleResp{..} =
     let TeleMsg{..} = _msg
         sdPairs   = [ ("agent_id",           show _aid)
                     , ("origin",             show _origin)
+                    , ("uom",                show $ msgTypeUOM $ _type)
                     , ("telemetry_msg_type", show _type) ]
         addr      = hashIdentifier $ BSC.pack $ concatMap snd sdPairs
     in do
