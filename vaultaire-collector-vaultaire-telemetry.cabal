@@ -24,7 +24,7 @@ executable vaultaire-collector-vaultaire-telemetry
                        bifunctors,
                        vaultaire-collector-common,
                        marquise,
-                       vaultaire-common >= 2.8.5,
+                       vaultaire-common >= 2.9.0,
                        bytestring,
                        text,
                        zeromq4-haskell,
